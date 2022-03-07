@@ -1,11 +1,16 @@
 import pygame
 import random
 pygame.init()#initializes Pygame
+pygame.mixer.init()
 pygame.display.set_caption("It Do Be Breakin' Out")#sets the window title
 screen = pygame.display.set_mode((800, 800))#creates game screen
 screen.fill((0, 0, 0))#paint background black
 doExit = False
 clock = pygame.time.Clock()
+
+#pygame.mixer.music.load('BONK.mp3')
+
+bonk = pygame.mixer.Sound('BONK.wav')
 
 vx=350
 
@@ -41,11 +46,13 @@ while not doExit:
     #Movement
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
-        if vx > 0 and vx < 800 - 200:
-            vx+=6
+        vx+=6
     if keys[pygame.K_LEFT]:
-        if vx > 0 and vx < 800 - 200:
-            vx-=6
+        vx-=6
+    if vx < 0:
+        vx = 0
+    if vx > 800 - 200:
+        vx = 800 - 200
 
     #LOIGIC------------
 
@@ -61,7 +68,9 @@ while not doExit:
         bVy *= -1
 
     #pattle refect
-    if by > 700 - 10 and by < vx + 700 and bx > vx:
+    if by > 700 - 10 and by < 700 + 40 and bx > vx - 10 and bx < vx + 200 - 10:
+        pygame.mixer.Sound.play(bonk)
+        pygame.mixer.music.stop()
         bVy *= -1
 
     #RENDER SUS----------
